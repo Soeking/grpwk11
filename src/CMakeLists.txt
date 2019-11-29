@@ -3,4 +3,4 @@ project(adsB01 C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_library(grpwk11 template.c)
+add_library(grpwk11 main.c)
