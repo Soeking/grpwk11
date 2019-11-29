@@ -1,0 +1,2 @@
+/usr/bin/ar qc libgrpwk11.a  CMakeFiles/grpwk11.dir/template.c.o
+/usr/bin/ranlib libgrpwk11.a
