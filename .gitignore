@@ -1,0 +1,5 @@
+/.idea
+/example_code
+src/cmake-build-debug/
+src/main
+src/main.o
