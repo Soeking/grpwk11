@@ -10,3 +10,5 @@ $ ./main file1 file2
 (example)
 $ ./main ../data/dat0_in ../out/dat0_out
 ```
+
+CMakeを使ってもいい
