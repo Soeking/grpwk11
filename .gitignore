@@ -1,9 +1,11 @@
 /.idea/
 /CMakeFiles
+/cmake-build-debug
 /example_code
 src/cmake-build-debug/
 src/grpwk11
 *.o
+*.class
 CMakeCache.txt
 CMakeFiles/
 Makefile

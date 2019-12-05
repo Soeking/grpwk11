@@ -42,7 +42,6 @@ int mainPrg(int argc, char **argv) {
     for (int i = 0; i < 400002; ++i) strings[i] = (char *) malloc(sizeof(char) * 400002);
     readFile(inputFile, text, strings, &sSize);
 
-    printf("%ld %d\n", strlen(text), sSize);
     fprintf(outputFile, "%s\n", text);
 
     fclose(inputFile);
