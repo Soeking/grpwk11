@@ -1,5 +1,5 @@
-PROG = main
-OBJS = main.o
+PROG = grpwk11
+OBJS = main.o read.o
 CC = gcc
 CFLAGS = -W -Wall -Wextra -Wconversion -Wshadow
 LDFLAGS = 

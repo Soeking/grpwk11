@@ -1,5 +1,10 @@
 /.idea/
+/CMakeFiles
 /example_code
 src/cmake-build-debug/
-src/main
-src/main.o
+src/grpwk11
+*.o
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
