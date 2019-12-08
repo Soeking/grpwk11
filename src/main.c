@@ -6,8 +6,14 @@
 #include <sys/resource.h>
 #include "read.h"
 
+typedef struct {
+    char *s;
+    int len;
+} str;
+
 char *text;
 char **strings;
+str *strs;
 int sSize;
 
 int mainPrg(int, char **);
@@ -41,6 +47,12 @@ int mainPrg(int argc, char **argv) {
     strings = (char **) malloc(sizeof(char *) * 400002);
     for (int i = 0; i < 400002; ++i) strings[i] = (char *) malloc(sizeof(char) * 400002);
     readFile(inputFile, text, strings, &sSize);
+    strs = (str *) malloc(sizeof(str) * (size_t) sSize);
+    for (int i = 0; i < sSize; ++i) {
+        strs[i].len = (int) strlen(strings[i]);
+        strs[i].s = (char *) malloc(sizeof(char) * (size_t) (strs[i].len + 1));
+        strcpy(strs[i].s, strings[i]);
+    }
 
     fprintf(outputFile, "%s\n", text);
 

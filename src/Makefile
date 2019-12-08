@@ -7,7 +7,7 @@ LDFLAGS =
 .SUFFIXES: .c
 
 $(PROG): $(OBJS)
-	$(CC) $(LDFLAGS) -o $(PROG) $^
+	$(CC) -o2 -Wall $(LDFLAGS) -lm -o $(PROG) $^
 .c.o:
 	$(CC) $(CFLAGS) -c $<
 clean:
