@@ -3,7 +3,7 @@
 /cmake-build-debug
 /example_code
 src/cmake-build-debug/
-src/grpwk11
+src/grpwk
 *.o
 *.class
 CMakeCache.txt

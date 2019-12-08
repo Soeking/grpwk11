@@ -1,4 +1,4 @@
-PROG = grpwk11
+PROG = grpwk
 OBJS = main.o read.o
 CC = gcc
 CFLAGS = -W -Wall -Wextra -Wconversion -Wshadow

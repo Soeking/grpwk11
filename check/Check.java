@@ -25,7 +25,7 @@ public class Check {
         char[] sch = ch != null ? ch.toCharArray() : new char[0];
 
         int sum = 0;
-        for (int i = 0; i < sco.length; i++) {
+        for (int i = 0; i < Math.min(sco.length, sch.length); i++) {
             if (sco[i] == sch[i]) sum++;
         }
         System.out.println(args[0] + ": " + (sum / (double) sco.length * 100.0) + "%");

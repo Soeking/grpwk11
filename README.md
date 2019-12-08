@@ -5,10 +5,10 @@
 $ cd src
 $ make
 
-$ ./grpwk11 file1 file2
+$ ./grpwk file1 file2
 
 (example)
-$ ./grpwk11 ../data/dat0_in ../out/dat0_out
+$ ./grpwk ../data/dat0_in ../out/dat0_out
 ```
 
 CMakeを使ってもいい
