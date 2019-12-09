@@ -16,6 +16,10 @@ char **strings;
 str *strs;
 int sSize;
 
+int calc(const void *a, const void *b) {
+    return ((str *) b)->len - ((str *) a)->len;
+}
+
 int mainPrg(int, char **);
 
 int main(int argc, char **argv) {
@@ -53,6 +57,9 @@ int mainPrg(int argc, char **argv) {
         strs[i].s = (char *) malloc(sizeof(char) * (size_t) (strs[i].len + 1));
         strcpy(strs[i].s, strings[i]);
     }
+    free(strings);
+
+    qsort(strs, (size_t) sSize, sizeof(str), calc);
 
     fprintf(outputFile, "%s\n", text);
 
