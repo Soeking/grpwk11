@@ -5,6 +5,7 @@
 #include <sys/time.h>
 #include <sys/resource.h>
 #include "read.h"
+#include "strings.h"
 
 typedef struct {
     char *s;
@@ -61,7 +62,12 @@ int mainPrg(int argc, char **argv) {
 
     qsort(strs, (size_t) sSize, sizeof(str), calc);
 
-    fprintf(outputFile, "%s\n", text);
+    int l = (int) strlen(text);
+    for (int i = 0; i < l; ++i) {
+        if (text[i] == 'x') fprintf(outputFile, "a");
+        else fprintf(outputFile, "%c", text[i]);
+    }
+    fprintf(outputFile, "\n");
 
     fclose(inputFile);
     fclose(outputFile);
