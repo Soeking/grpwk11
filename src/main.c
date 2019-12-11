@@ -14,7 +14,6 @@ char *text;
 char **strings;
 str *strs;
 int sSize;
-bool used[400001] = {false};
 
 int calc(const void *a, const void *b) {
     return ((str *) b)->len - ((str *) a)->len;
@@ -56,13 +55,13 @@ int mainPrg(int argc, char **argv) {
         strs[i].len = (ushort) strlen(strings[i]);
         strs[i].s = (char *) malloc(sizeof(char) * (size_t) (strs[i].len + 1));
         strcpy(strs[i].s, strings[i]);
-        strs[i].use = true;
+        strs[i].id = -1;
     }
     free(strings);
 
     qsort(strs, (size_t) sSize, sizeof(str), calc);
 
-    proc(text, strs, used, sSize, outputFile);
+    proc(text, strs, sSize, outputFile);
 
     fclose(inputFile);
     fclose(outputFile);

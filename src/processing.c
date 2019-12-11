@@ -6,13 +6,38 @@
 #include "strings.h"
 #include "search.h"
 
-void proc(char *text, str *strs, bool *used, int size, FILE *out) {
-    int l = (int) strlen(text);
-    ushort m = strs[0].len;
-    for (int i = 0; i < size; ++i) {
-        if (strs[i].len < 70) break;
-        int sub = bm(text, strs[i].s, 0);
-        printf("%d ", sub);
+
+void put(char *text, bool *used, char *string, int id) {
+    int l = (int) strlen(string);
+    for (int i = 0; i < l; ++i) {
+        text[i + id] = string[i];
+        used[i + id] = true;
     }
-    printf("\n");
+}
+
+void proc(char *text, str *strs, int size, FILE *out) {
+    int l = (int) strlen(text);
+    char *outText;
+    outText = (char *) malloc(sizeof(char) * 400002);
+    strcpy(outText, text);
+    bool *used;
+    used = (bool *) malloc(sizeof(bool) * (size_t) l);
+    for (int i = 0; i < size; ++i) {
+        if (strs[i].len < 10) break;
+        int index = 0;
+        while (true) {
+            index = bm(text, strs[i].s, index + strs[i].len);
+            if (index < 0) break;
+            if (strs[i].s[0] == 'c' && outText[index - 1] == 'd') continue;
+            if (!used[index]) break;
+        }
+        strs[i].id = index;
+        put(outText, used, strs[i].s, strs[i].id);
+    }
+
+    for (int i = 0; i < l; ++i) {
+        if (outText[i] == 'x') fprintf(out, "a");
+        else fprintf(out, "%c", outText[i]);
+    }
+    fprintf(out, "\n");
 }

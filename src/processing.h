@@ -6,9 +6,9 @@
 typedef struct {
     char *s;
     ushort len;
-    bool use;
+    int id;
 } str;
 
-void proc(char *, str *, bool *, int, FILE *);
+void proc(char *, str *, int, FILE *);
 
 #endif
