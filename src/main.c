@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,13 +10,15 @@
 
 typedef struct {
     char *s;
-    int len;
+    ushort len;
+    bool use;
 } str;
 
 char *text;
 char **strings;
 str *strs;
 int sSize;
+bool used[400001] = {false};
 
 int calc(const void *a, const void *b) {
     return ((str *) b)->len - ((str *) a)->len;
@@ -54,9 +57,10 @@ int mainPrg(int argc, char **argv) {
     readFile(inputFile, text, strings, &sSize);
     strs = (str *) malloc(sizeof(str) * (size_t) sSize);
     for (int i = 0; i < sSize; ++i) {
-        strs[i].len = (int) strlen(strings[i]);
+        strs[i].len = (ushort) strlen(strings[i]);
         strs[i].s = (char *) malloc(sizeof(char) * (size_t) (strs[i].len + 1));
         strcpy(strs[i].s, strings[i]);
+        strs[i].use = true;
     }
     free(strings);
 
@@ -71,5 +75,7 @@ int mainPrg(int argc, char **argv) {
 
     fclose(inputFile);
     fclose(outputFile);
+    free(text);
+    free(strs);
     return 0;
 }
