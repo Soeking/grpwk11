@@ -22,13 +22,19 @@ void proc(char *text, str *strs, int size, FILE *out) {
     strcpy(outText, text);
     bool *used;
     used = (bool *) malloc(sizeof(bool) * (size_t) l);
+    int fault = 0;
     for (int i = 0; i < size; ++i) {
-        if (strs[i].len < 7) break;
+        if (strs[i].len < 40) break;
         int index = 0;
         while (true) {
             index = bm(text, strs[i].s, index + strs[i].len);
-            if (index < 0) break;
-            if (strs[i].s[0] == 'c' && outText[index - 1] == 'd') continue;
+            if (index < 0) {
+                fault++;
+                break;
+            }
+            if ((strs[i].s[0] == 'c' && outText[index - 1] == 'd') ||
+                (strs[i].s[strs[i].len - 1] == 'd' && outText[index + strs[i].len] == 'c'))
+                continue;
             if (!used[index] && !used[index + strs[i].len - 1]) break;
         }
         if (index >= 0) {
@@ -36,10 +42,11 @@ void proc(char *text, str *strs, int size, FILE *out) {
             put(outText, used, strs[i].s, strs[i].id);
         }
     }
+    printf("fault: %d\n", fault);
 
 //    for (int i = 0; i < l; ++i) {
 //        if (outText[i] == 'x') fprintf(out, "a");
 //        else fprintf(out, "%c", outText[i]);
 //    }
-    fprintf(out, "%s\n",outText);
+    fprintf(out, "%s\n", outText);
 }
