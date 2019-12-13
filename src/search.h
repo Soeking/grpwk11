@@ -7,4 +7,4 @@ int findNext(int *, char, int);
 
 int bm(const char *, const char *, int);
 
-#endif //GRPWK11_SEARCH_H
+#endif
