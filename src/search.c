@@ -2,15 +2,15 @@
 #include <string.h>
 #include "search.h"
 
-void tableInit(int *table, const char *pattern, int ptn_len) {
+void tableInit(int *table, const char *pattern, int ptnLen) {
     int cnt = 0;
 
     for (cnt = 0; cnt < 256; cnt++) {
-        table[cnt] = ptn_len;
+        table[cnt] = ptnLen;
     }
 
-    for (cnt = 0; cnt < ptn_len; cnt++) {
-        table[(int) pattern[cnt]] = ptn_len - cnt - 1;
+    for (cnt = 0; cnt < ptnLen; cnt++) {
+        table[(int) pattern[cnt]] = ptnLen - cnt - 1;
     }
 }
 
@@ -18,10 +18,8 @@ int findNext(int *table, char target, int remain) {
     return table[(int) target] > remain ? table[(int) target] : remain;
 }
 
-int bm(const char *text, const char *pattern, int i) {
+int bm(const char *text, const char *pattern, int i, int txtLen, int ptnLen) {
     int table[256];
-    int txtLen = (int) strlen(text);
-    int ptnLen = (int) strlen(pattern);
     int j = ptnLen - 1;
 
     tableInit(table, pattern, ptnLen);

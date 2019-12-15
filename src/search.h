@@ -5,6 +5,6 @@ void tableInit(int *, const char *, int);
 
 int findNext(int *, char, int);
 
-int bm(const char *, const char *, int);
+int bm(const char *, const char *, int, int, int);
 
 #endif

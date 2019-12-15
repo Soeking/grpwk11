@@ -20,6 +20,17 @@ void put(char *text, bool *used, const char *string, int id, int l) {
     }
 }
 
+int searchId(str *ss, int id, int size) {
+    for (int i = 0; i < size; ++i) {
+        if (ss[i].id <= id && id < (ss[i].id + ss[i].len)) {
+            printf("ok\n");
+            return i;
+        }
+    }
+    printf("f\n");
+    return -1;
+}
+
 void proc(char *text, str *strs, int size, FILE *out) {
     int l = (int) strlen(text);
     char *outText;
@@ -27,17 +38,22 @@ void proc(char *text, str *strs, int size, FILE *out) {
     strcpy(outText, text);
     bool *used;
     used = (bool *) malloc(sizeof(bool) * (size_t) l);
+    memset(used, false, (size_t) l);
     int fault = 0;
     for (int i = 0; i < size; ++i) {
         if (strs[i].len < 30) break;
+        RES:;
         int index = strs[i].len - 1;
         while (true) {
-            index = bm(text, strs[i].s, index);
+            index = bm(text, strs[i].s, index, l, strs[i].len);
             if (index < 0) {
-//                int first = bm(bm(text, strs[i].s, index + strs[i].len);
-//                revert(text, outText, used, strs[].id, strs[].len);
+                int first = bm(text, strs[i].s, strs[i].len - 1, l, strs[i].len);
+                int idf = searchId(strs, first, i);
+                if (idf > 0) revert(text, outText, used, strs[idf].id, strs[idf].len);
+                int idl = searchId(strs, first + strs[i].len - 1, i);
+                if (idl > 0) revert(text, outText, used, strs[idl].id, strs[idl].len);
                 fault++;
-                break;
+                goto RES;
             }
             if ((strs[i].s[0] == 'c' && outText[index - 1] == 'd') ||
                 (strs[i].s[strs[i].len - 1] == 'd' && outText[index + strs[i].len] == 'c'))
