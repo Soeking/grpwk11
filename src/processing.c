@@ -23,35 +23,39 @@ void put(char *text, bool *used, const char *string, int id, int l) {
 int searchId(str *ss, int id, int size) {
     for (int i = 0; i < size; ++i) {
         if (ss[i].id <= id && id < (ss[i].id + ss[i].len)) {
-            printf("ok\n");
             return i;
         }
     }
-    printf("f\n");
     return -1;
 }
 
-void procStr(char *text, char *outText, bool *used, int i, str *strs, int l) {
-    int index = strs[i].len - 1;
+int loopBm(char *text, const char *outText, str s, int l, int index) {
     while (true) {
-        index = bm(text, strs[i].s, index, l, strs[i].len);
-        if (index < 0) {
-            int first = bm(text, strs[i].s, strs[i].len - 1, l, strs[i].len);
-            int idf = searchId(strs, first, i);
-            if (idf > 0) revert(text, outText, used, strs[idf].id, strs[idf].len);
-            int idl = searchId(strs, first + strs[i].len - 1, i);
-            if (idl > 0) revert(text, outText, used, strs[idl].id, strs[idl].len);
-            procStr(text, outText, used, i, strs, l);
-            //goto RES;
-        }
-        if ((strs[i].s[0] == 'c' && outText[index - 1] == 'd') ||
-            (strs[i].s[strs[i].len - 1] == 'd' && outText[index + strs[i].len] == 'c'))
-            goto CONT;
-        if (!used[index] && !used[index + strs[i].len - 1]) break;
-        CONT:;
-        index += strs[i].len;
+        index = bm(text, s.s, s.table, index, l, s.len);
+        if (index < 0) break;
+        if ((s.s[0] == 'c' && outText[index - 1] == 'd') ||
+            (s.s[s.len - 1] == 'd' && outText[index + s.len] == 'c'))
+            index += s.len;
+        else break;
     }
-    if (index >= 0) {
+    return index;
+}
+
+void procStr(char *text, char *outText, bool *used, int i, str *strs, int l) {
+    int index = loopBm(text, outText, strs[i], l, strs[i].len - 1);
+    while (true) {
+        if (index < 0) break;
+        if (!used[index] && !used[index + strs[i].len - 1]) break;
+        index = loopBm(text, outText, strs[i], l, index + strs[i].len);
+    }
+    if (index < 0) {
+        int first = loopBm(text, outText, strs[i], l, strs[i].len - 1);
+        int idf = searchId(strs, first, i);
+        if (idf > 0) revert(text, outText, used, strs[idf].id, strs[idf].len);
+        int idl = searchId(strs, first + strs[i].len - 1, i);
+        if (idl > 0 && idf != idl) revert(text, outText, used, strs[idl].id, strs[idl].len);
+        procStr(text, outText, used, i, strs, l);
+    } else {
         strs[i].id = index;
         put(outText, used, strs[i].s, strs[i].id, strs[i].len);
     }
@@ -66,7 +70,8 @@ void proc(char *text, str *strs, int size, FILE *out) {
     used = (bool *) malloc(sizeof(bool) * (size_t) l);
     memset(used, false, (size_t) l);
     for (int i = 0; i < size; ++i) {
-        if (strs[i].len < 30) break;
+        if (strs[i].len < 20) break;
+        tableInit(strs[i].table, strs[i].s, strs[i].len);
         procStr(text, outText, used, i, strs, l);
     }
 

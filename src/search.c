@@ -5,7 +5,7 @@
 void tableInit(int *table, const char *pattern, int ptnLen) {
     int cnt = 0;
 
-    for (cnt = 0; cnt < 256; cnt++) {
+    for (cnt = 96; cnt < 99; cnt++) {
         table[cnt] = ptnLen;
     }
 
@@ -18,11 +18,8 @@ int findNext(int *table, char target, int remain) {
     return table[(int) target] > remain ? table[(int) target] : remain;
 }
 
-int bm(const char *text, const char *pattern, int i, int txtLen, int ptnLen) {
-    int table[256];
+int bm(const char *text, const char *pattern, int table[], int i, int txtLen, int ptnLen) {
     int j = ptnLen - 1;
-
-    tableInit(table, pattern, ptnLen);
 
     if (i == 0) i = ptnLen - 1;
     while ((i < txtLen) && (j >= 0)) {
