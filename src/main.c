@@ -19,7 +19,7 @@ int calc(const void *a, const void *b) {
     return ((str *) b)->len - ((str *) a)->len;
 }
 
-int mainPrg(int, char **);
+void mainPrg(int, char **);
 
 int main(int argc, char **argv) {
 
@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
     return (0);
 }
 
-int mainPrg(int argc, char **argv) {
+void mainPrg(int argc, char **argv) {
     assert(argc == 3);
     FILE *inputFile = fopen(argv[1], "r");
     assert(inputFile != NULL);
@@ -67,5 +67,4 @@ int mainPrg(int argc, char **argv) {
     fclose(outputFile);
     free(text);
     free(strs);
-    return 0;
 }

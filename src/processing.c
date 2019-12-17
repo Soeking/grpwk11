@@ -29,12 +29,12 @@ int searchId(str *ss, int id, int size) {
     return -1;
 }
 
-int loopBm(char *text, const char *outText, str s, int l, int index) {
+int loopBm(char *text, str s, int l, int index) {
     while (true) {
         index = bm(text, s.s, s.table, index, l, s.len);
         if (index < 0) break;
-        if ((s.s[0] == 'c' && outText[index - 1] == 'd') ||
-            (s.s[s.len - 1] == 'd' && outText[index + s.len] == 'c'))
+        if ((s.s[0] == 'c' && text[index - 1] == 'd') ||
+            (s.s[s.len - 1] == 'd' && text[index + s.len] == 'c'))
             index += s.len;
         else break;
     }
@@ -42,14 +42,14 @@ int loopBm(char *text, const char *outText, str s, int l, int index) {
 }
 
 void procStr(char *text, char *outText, bool *used, int i, str *strs, int l) {
-    int index = loopBm(text, outText, strs[i], l, strs[i].len - 1);
+    int index = loopBm(text, strs[i], l, strs[i].len - 1);
     while (true) {
         if (index < 0) break;
         if (!used[index] && !used[index + strs[i].len - 1]) break;
-        index = loopBm(text, outText, strs[i], l, index + strs[i].len);
+        index = loopBm(text, strs[i], l, index + strs[i].len);
     }
     if (index < 0) {
-        int first = loopBm(text, outText, strs[i], l, strs[i].len - 1);
+        int first = loopBm(text, strs[i], l, strs[i].len - 1);
         int idf = searchId(strs, first, i);
         if (idf > 0) revert(text, outText, used, strs[idf].id, strs[idf].len);
         int idl = searchId(strs, first + strs[i].len - 1, i);
