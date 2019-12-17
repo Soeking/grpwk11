@@ -41,20 +41,31 @@ int loopBm(char *text, str s, int l, int index) {
     return index;
 }
 
-void procStr(char *text, char *outText, bool *used, int i, str *strs, int l) {
-    int index = loopBm(text, strs[i], l, strs[i].len - 1);
+void procStr(char *text, char *outText, bool *used, int i, str *strs, int l, int size) {
+    int index = loopBm(text, strs[i], l, strs[i].len + strs[i].id);
     while (true) {
         if (index < 0) break;
         if (!used[index] && !used[index + strs[i].len - 1]) break;
         index = loopBm(text, strs[i], l, index + strs[i].len);
     }
     if (index < 0) {
-        int first = loopBm(text, strs[i], l, strs[i].len - 1);
-        int idf = searchId(strs, first, i);
+        int first = loopBm(text, strs[i], l, strs[i].len + strs[i].id);
+        if (first < 0) first = loopBm(text, strs[i], l, strs[i].len - 1); //多分あった方がいい(精度落ちたけど)
+        int idf = searchId(strs, first, size);
+        int idl = searchId(strs, first + strs[i].len - 1, size);
         if (idf > 0) revert(text, outText, used, strs[idf].id, strs[idf].len);
-        int idl = searchId(strs, first + strs[i].len - 1, i);
         if (idl > 0 && idf != idl) revert(text, outText, used, strs[idl].id, strs[idl].len);
-        procStr(text, outText, used, i, strs, l);
+        strs[i].id = first;
+        put(outText, used, strs[i].s, strs[i].id, strs[i].len);
+        if (first < 0) printf("min\n");
+        if (idf > 0) {
+            if (i != idf)
+                procStr(text, outText, used, idf, strs, l, size);
+        }
+        if (idl > 0 && idf != idl) {
+            if (i != idl)
+                procStr(text, outText, used, idl, strs, l, size);
+        }
     } else {
         strs[i].id = index;
         put(outText, used, strs[i].s, strs[i].id, strs[i].len);
@@ -72,7 +83,7 @@ void proc(char *text, str *strs, int size, FILE *out) {
     for (int i = 0; i < size; ++i) {
         if (strs[i].len < 20) break;
         tableInit(strs[i].table, strs[i].s, strs[i].len);
-        procStr(text, outText, used, i, strs, l);
+        procStr(text, outText, used, i, strs, l, size);
     }
 
 //    for (int i = 0; i < l; ++i) {
