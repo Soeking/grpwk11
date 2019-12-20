@@ -5,7 +5,7 @@
 void tableInit(int *table, const char *pattern, int ptnLen) {
     int cnt = 0;
 
-    for (cnt = 96; cnt < 99; cnt++) {
+    for (cnt = 97; cnt < 101; cnt++) {
         table[cnt] = ptnLen;
     }
 

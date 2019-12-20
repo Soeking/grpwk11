@@ -7,7 +7,7 @@ typedef struct {
     char *s;
     ushort len;
     int id;
-    int table[128];
+    int table[101];
 } str;
 
 void proc(char *, str *, int, FILE *);
