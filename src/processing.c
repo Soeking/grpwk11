@@ -33,8 +33,8 @@ int loopBm(char *text, const char *outText, const int *used, str s, int l, int i
     while (true) {
         index = bm(text, s.s, s.table, index, l, s.len);
         if (index < 0) break;
-        if ((s.s[0] == 'c' && outText[index - 1] == 'd' && used[index - 1] != strId) ||
-            (s.s[s.len - 1] == 'd' && outText[index + s.len] == 'c' && (used[index + s.len] != strId)))
+        if ((s.s[0] == 'c' && outText[index - 1] == 'd') ||
+            (s.s[s.len - 1] == 'd' && outText[index + s.len] == 'c'))
             index += s.len;
         else break;
     }
@@ -51,10 +51,12 @@ void procStr(char *text, char *outText, int *used, int i, str *strs, int l, int 
     if (index < 0) {
         int first = loopBm(text, outText, used, strs[i], l, strs[i].len + strs[i].id, i);
         if (first < 0) first = loopBm(text, outText, used, strs[i], l, strs[i].len - 1, i); //多分あった方がいい(精度落ちたけど)
+        if (first < 0) return;
         int idf = searchId(strs, first, size);
         int idl = searchId(strs, first + strs[i].len - 1, size);
-        if (idf > 0) revert(text, outText, used, strs[idf].id, strs[idf].len);
-        if (idl > 0 && idf != idl) revert(text, outText, used, strs[idl].id, strs[idl].len);
+        if (idf > 0 && i != idf) revert(text, outText, used, strs[idf].id, strs[idf].len);
+        if (idl > 0 && idf != idl && i != idl) revert(text, outText, used, strs[idl].id, strs[idl].len);
+
         strs[i].id = first;
         put(outText, used, strs[i].s, strs[i].id, strs[i].len, i);
         if (idf > 0) {
