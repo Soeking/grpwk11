@@ -1,7 +1,3 @@
-#include <stdlib.h>
-#include <string.h>
-#include "search.h"
-
 void tableInit(int *table, const char *pattern, int ptnLen) {
     int cnt = 0;
 

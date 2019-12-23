@@ -3,7 +3,6 @@
 #include <string.h>
 #include <bits/types/FILE.h>
 #include "processing.h"
-#include "strings.h"
 #include "search.h"
 
 void revert(const char *baseText, char *text, int *used, int id, int l) {
