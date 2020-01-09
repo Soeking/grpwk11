@@ -1,5 +1,3 @@
-#include <stdbool.h>
-
 #ifndef GRPWK11_PROCESSING_H
 #define GRPWK11_PROCESSING_H
 

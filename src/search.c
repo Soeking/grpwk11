@@ -17,7 +17,7 @@ int findNext(int *table, char target, int remain) {
 int bm(const char *text, const char *pattern, int table[], int i, int txtLen, int ptnLen) {
     int j = ptnLen - 1;
 
-    if (i == 0) i = ptnLen - 1;
+    i || (i = ptnLen - 1);
     while ((i < txtLen) && (j >= 0)) {
         if (text[i] != pattern[j] && text[i] != 'x') {
             i += findNext(table, text[i], (ptnLen - j));

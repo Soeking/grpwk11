@@ -28,7 +28,7 @@ int searchId(str *ss, int id, int size) {
 }
 
 int loopBm(char *text, const char *outText, str s, int l, int index) {
-    while (true) {
+    while (1) {
         index = bm(text, s.s, s.table, index, l, s.len);
         if (index < 0) break;
         if ((s.s[0] == 'c' && outText[index - 1] == 'd') ||
@@ -40,7 +40,7 @@ int loopBm(char *text, const char *outText, str s, int l, int index) {
 }
 
 int loopSoft(char *text, str s, int l, int index) {
-    while (true) {
+    while (1) {
         index = bm(text, s.s, s.table, index, l, s.len);
         if (index < 0) break;
         if ((s.s[0] == 'c' && text[index - 1] == 'd') ||
@@ -53,7 +53,7 @@ int loopSoft(char *text, str s, int l, int index) {
 
 void procStr(char *text, char *outText, int *used, int i, str *strs, int l, int size) {
     int index = loopBm(text, outText, strs[i], l, strs[i].len + strs[i].id);
-    while (true) {
+    while (1) {
         if (index < 0) break;
         if (used[index] < 0 && used[index + strs[i].len - 1] < 0) break;
         index = loopBm(text, outText, strs[i], l, index + strs[i].len);
