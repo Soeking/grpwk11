@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <bits/types/FILE.h>
 #include "processing.h"
 #include "search.h"
 
@@ -62,7 +61,7 @@ void procStr(char *text, char *outText, int *used, int i, str *strs, int l, int 
     if (index < 0) {
         int first = loopBm(text, outText, strs[i], l, strs[i].len + strs[i].id);
         if (first < 0) first = loopBm(text, outText, strs[i], l, strs[i].len - 1);
-        if (first < 0) return;;
+        if (first < 0) return;
         int idf = searchId(strs, first, size);
         int idl = searchId(strs, first + strs[i].len - 1, size);
         if (idf >= 0 && i != idf) revert(text, outText, used, strs[idf].id, strs[idf].len);

@@ -24,5 +24,5 @@ $ sh check.sh
 ※check.shを実行すればcheck/に移動しなくてもいい。
 
 ### Windows
-ビルドしてそれぞれ実行すればいいかと  
-それかbat書くか
+そもそも動かない  
+WSLなりで
