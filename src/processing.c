@@ -4,14 +4,14 @@
 #include "processing.h"
 #include "search.h"
 
-void revert(const char *baseText, char *text, int *used, int id, int l) {
+void revert(const char const *baseText, char *text, int *used, int id, int l) {
     for (int i = 0; i < l; ++i) {
         if (baseText[i + id] == 'x') text[i + id] = 'x';
         used[i + id] = -1;
     }
 }
 
-void put(char *text, int *used, const char *string, int id, int l, int strId) {
+void put(char *text, int *used, const char const *string, int id, int l, int strId) {
     for (int i = 0; i < l; ++i) {
         text[i + id] = string[i];
         used[i + id] = strId;
@@ -27,7 +27,7 @@ int searchId(str *ss, int id, int size) {
     return -1;
 }
 
-int loopBm(char *text, const char *outText, str s, int l, int index) {
+int loopBm(const char const *text, const char const *outText, str s, int l, int index) {
     while (1) {
         index = bm(text, s.s, s.table, index, l, s.len);
         if (index < 0) break;
@@ -39,7 +39,7 @@ int loopBm(char *text, const char *outText, str s, int l, int index) {
     return index;
 }
 
-int loopSoft(char *text, str s, int l, int index) {
+int loopSoft(const char const *text, str s, int l, int index) {
     while (1) {
         index = bm(text, s.s, s.table, index, l, s.len);
         if (index < 0) break;
@@ -51,7 +51,7 @@ int loopSoft(char *text, str s, int l, int index) {
     return index;
 }
 
-void procStr(char *text, char *outText, int *used, int i, str *strs, int l, int size) {
+void procStr(const char const *text, char *outText, int *used, int i, str *strs, int l, int size) {
     int index = loopBm(text, outText, strs[i], l, strs[i].len + strs[i].id);
     while (1) {
         if (index < 0) break;
@@ -83,7 +83,7 @@ void procStr(char *text, char *outText, int *used, int i, str *strs, int l, int 
     }
 }
 
-void lastProc(char *text, char *outText, int *used, int i, str *strs, int l, int size) {
+void lastProc(const char const *text, char *outText, int *used, int i, str *strs, int l, int size) {
     int first = loopSoft(text, strs[i], l, strs[i].len + strs[i].id);
     if (first < 0) first = loopSoft(text, strs[i], l, strs[i].len - 1);
     int idf = searchId(strs, first, size);
@@ -103,7 +103,7 @@ void lastProc(char *text, char *outText, int *used, int i, str *strs, int l, int
     }
 }
 
-void proc(char *text, str *strs, int size, FILE *out) {
+void proc(const char const *text, str *strs, int size, FILE *out) {
     int l = (int) strlen(text);
     char *outText;
     outText = (char *) malloc(sizeof(char) * 400002);

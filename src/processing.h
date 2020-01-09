@@ -8,6 +8,6 @@ typedef struct {
     int table[101];
 } str;
 
-void proc(char *, str *, int, FILE *);
+void proc(const char *, str *, int, FILE *);
 
 #endif
