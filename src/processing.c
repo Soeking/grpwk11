@@ -18,7 +18,7 @@ __attribute__((nonnull))void put(char *text, int *used, const char const *string
     }
 }
 
-__attribute__((nonnull))int searchId(str *ss, int id, int size) {
+__attribute__((nonnull))int searchId(const str const *ss, int id, int size) {
     for (int i = 0; i < size; ++i) {
         if (ss[i].id <= id && id < (ss[i].id + ss[i].len)) {
             return i;
