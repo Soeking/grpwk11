@@ -4,21 +4,21 @@
 #include "processing.h"
 #include "search.h"
 
-void revert(const char const *baseText, char *text, int *used, int id, int l) {
+__attribute__((nonnull))void revert(const char const *baseText, char *text, int *used, int id, int l) {
     for (int i = 0; i < l; ++i) {
         if (baseText[i + id] == 'x') text[i + id] = 'x';
         used[i + id] = -1;
     }
 }
 
-void put(char *text, int *used, const char const *string, int id, int l, int strId) {
+__attribute__((nonnull))void put(char *text, int *used, const char const *string, int id, int l, int strId) {
     for (int i = 0; i < l; ++i) {
         text[i + id] = string[i];
         used[i + id] = strId;
     }
 }
 
-int searchId(str *ss, int id, int size) {
+__attribute__((nonnull))int searchId(str *ss, int id, int size) {
     for (int i = 0; i < size; ++i) {
         if (ss[i].id <= id && id < (ss[i].id + ss[i].len)) {
             return i;
@@ -27,7 +27,7 @@ int searchId(str *ss, int id, int size) {
     return -1;
 }
 
-int loopBm(const char const *text, const char const *outText, str s, int l, int index) {
+__attribute__((nonnull))int loopBm(const char const *text, const char const *outText, str s, int l, int index) {
     while (1) {
         index = bm(text, s.s, s.table, index, l, s.len);
         if (index < 0) break;
@@ -39,7 +39,7 @@ int loopBm(const char const *text, const char const *outText, str s, int l, int 
     return index;
 }
 
-int loopSoft(const char const *text, str s, int l, int index) {
+__attribute__((nonnull))int loopSoft(const char const *text, str s, int l, int index) {
     while (1) {
         index = bm(text, s.s, s.table, index, l, s.len);
         if (index < 0) break;
@@ -51,7 +51,7 @@ int loopSoft(const char const *text, str s, int l, int index) {
     return index;
 }
 
-void procStr(const char const *text, char *outText, int *used, int i, str *strs, int l, int size) {
+__attribute__((nonnull))void procStr(const char const *text, char *outText, int *used, int i, str *strs, int l, int size) {
     int index = loopBm(text, outText, strs[i], l, strs[i].len + strs[i].id);
     while (1) {
         if (index < 0) break;
@@ -88,7 +88,7 @@ void procStr(const char const *text, char *outText, int *used, int i, str *strs,
     }
 }
 
-void lastProc(const char const *text, char *outText, int *used, int i, str *strs, int l, int size) {
+__attribute__((nonnull))void lastProc(const char const *text, char *outText, int *used, int i, str *strs, int l, int size) {
     int first = loopSoft(text, strs[i], l, strs[i].len + strs[i].id);
     if (first < 0) first = loopSoft(text, strs[i], l, strs[i].len - 1);
     int idf = searchId(strs, first, size);

@@ -1,6 +1,6 @@
 #define maxOf(a, b) a > b ? a : b
 
-void tableInit(int *table, const char *pattern, int ptnLen) {
+__attribute__((nonnull))void tableInit(int *table, const char *pattern, int ptnLen) {
     int cnt = 0;
 
     for (cnt = 97; cnt < 101; cnt++) {
@@ -12,7 +12,7 @@ void tableInit(int *table, const char *pattern, int ptnLen) {
     }
 }
 
-int bm(const char *text, const char *pattern, const int table[], int i, int txtLen, int ptnLen) {
+__attribute__((nonnull))int bm(const char *text, const char *pattern, const int table[], int i, int txtLen, int ptnLen) {
     int j = ptnLen - 1;
     int lenMinus = ptnLen - 1;
 

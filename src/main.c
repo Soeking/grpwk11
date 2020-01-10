@@ -13,7 +13,7 @@ str *strs;
 int sSize;
 size_t  strSize;
 
-__attribute__((constructor)) void mem() {
+__attribute__((constructor))void mem() {
     text = (char *) malloc(sizeof(char) * 400002);
     strings = (char **) malloc(sizeof(char *) * 400002);
     for (int i = 0; i < 400002; ++i) strings[i] = (char *) malloc(sizeof(char) * 400002);
