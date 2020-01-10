@@ -11,6 +11,14 @@ char *text;
 char **strings;
 str *strs;
 int sSize;
+size_t  strSize;
+
+__attribute__((constructor)) void mem() {
+    text = (char *) malloc(sizeof(char) * 400002);
+    strings = (char **) malloc(sizeof(char *) * 400002);
+    for (int i = 0; i < 400002; ++i) strings[i] = (char *) malloc(sizeof(char) * 400002);
+    strSize = sizeof(str);
+}
 
 int calc(const void *a, const void *b) {
     return ((str *) b)->len - ((str *) a)->len;
@@ -43,25 +51,18 @@ void mainPrg(int argc, char **argv) {
     FILE *outputFile = fopen(argv[2], "w");
     assert(outputFile != NULL);
 
-    text = (char *) malloc(sizeof(char) * 400002);
-    strings = (char **) malloc(sizeof(char *) * 400002);
-    for (int i = 0; i < 400002; ++i) strings[i] = (char *) malloc(sizeof(char) * 400002);
     readFile(inputFile, text, strings, &sSize);
-    strs = (str *) malloc(sizeof(str) * (size_t) sSize);
+    strs = (str *) malloc(strSize * (size_t) sSize);
     for (int i = 0; i < sSize; ++i) {
         strs[i].len = (ushort) strlen(strings[i]);
-        strs[i].s = (char *) malloc(sizeof(char) * (size_t) (strs[i].len + 1));
+        strs[i].s = (char *) malloc((size_t) (strs[i].len + 1));
         strcpy(strs[i].s, strings[i]);
         strs[i].id = -1;
+        strs[i].free = 1;
     }
     free(strings);
 
-    qsort(strs, (size_t) sSize, sizeof(str), calc);
+    qsort(strs, (size_t) sSize, strSize, calc);
 
     proc(text, strs, sSize, outputFile);
-
-    fclose(inputFile);
-    fclose(outputFile);
-    free(text);
-    free(strs);
 }

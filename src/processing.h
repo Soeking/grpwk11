@@ -6,6 +6,7 @@ typedef struct {
     ushort len;
     int id;
     int table[101];
+    int free;
 } str;
 
 void proc(const char *, str *, int, FILE *);

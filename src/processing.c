@@ -64,21 +64,26 @@ void procStr(const char const *text, char *outText, int *used, int i, str *strs,
         if (first < 0) return;
         int idf = searchId(strs, first, size);
         int idl = searchId(strs, first + strs[i].len - 1, size);
-        if (idf >= 0 && i != idf) revert(text, outText, used, strs[idf].id, strs[idf].len);
-        if (idl >= 0 && idf != idl && i != idl) revert(text, outText, used, strs[idl].id, strs[idl].len);
+        int fb = 0, lb = 0;
+        if (idf > 0 && i != idf) {
+            revert(text, outText, used, strs[idf].id, strs[idf].len);
+            strs[idf].free = 1;
+            fb = 1;
+        }
+        if (idl > 0 && idf != idl && i != idl) {
+            revert(text, outText, used, strs[idl].id, strs[idl].len);
+            strs[idl].free = 1;
+            lb = 1;
+        }
 
         strs[i].id = first;
+        strs[i].free = 0;
         put(outText, used, strs[i].s, strs[i].id, strs[i].len, i);
-        if (idf >= 0) {
-            if (i != idf)
-                procStr(text, outText, used, idf, strs, l, size);
-        }
-        if (idl >= 0 && idf != idl) {
-            if (i != idl)
-                procStr(text, outText, used, idl, strs, l, size);
-        }
+        if (fb) procStr(text, outText, used, idf, strs, l, size);
+        if (lb) procStr(text, outText, used, idl, strs, l, size);
     } else {
         strs[i].id = index;
+        strs[i].free = 0;
         put(outText, used, strs[i].s, strs[i].id, strs[i].len, i);
     }
 }
@@ -88,19 +93,23 @@ void lastProc(const char const *text, char *outText, int *used, int i, str *strs
     if (first < 0) first = loopSoft(text, strs[i], l, strs[i].len - 1);
     int idf = searchId(strs, first, size);
     int idl = searchId(strs, first + strs[i].len - 1, size);
-    if (idf > 0 && i != idf) revert(text, outText, used, strs[idf].id, strs[idf].len);
-    if (idl > 0 && idf != idl && i != idl) revert(text, outText, used, strs[idl].id, strs[idl].len);
+    int fb = 0, lb = 0;
+    if (idf > 0 && i != idf) {
+        revert(text, outText, used, strs[idf].id, strs[idf].len);
+        strs[idf].free = 1;
+        fb = 1;
+    }
+    if (idl > 0 && idf != idl && i != idl) {
+        revert(text, outText, used, strs[idl].id, strs[idl].len);
+        strs[idl].free = 1;
+        lb = 1;
+    }
 
     strs[i].id = first;
+    strs[i].free = 0;
     put(outText, used, strs[i].s, strs[i].id, strs[i].len, i);
-    if (idf > 0) {
-        if (i != idf)
-            procStr(text, outText, used, idf, strs, l, size);
-    }
-    if (idl > 0 && idf != idl) {
-        if (i != idl)
-            procStr(text, outText, used, idl, strs, l, size);
-    }
+    if (fb) procStr(text, outText, used, idf, strs, l, size);
+    if (lb) procStr(text, outText, used, idl, strs, l, size);
 }
 
 void proc(const char const *text, str *strs, int size, FILE *out) {
@@ -120,7 +129,7 @@ void proc(const char const *text, str *strs, int size, FILE *out) {
     }
 
     for (int j = 0; j < i; ++j) {
-        if (strs[i].id == -1) lastProc(text, outText, used, i, strs, l, size);
+        if (strs[i].free) lastProc(text, outText, used, i, strs, l, size);
     }
 
     for (int j = 0; j < l; ++j) {

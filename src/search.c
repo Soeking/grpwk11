@@ -1,3 +1,5 @@
+#define maxOf(a, b) a > b ? a : b
+
 void tableInit(int *table, const char *pattern, int ptnLen) {
     int cnt = 0;
 
@@ -10,18 +12,14 @@ void tableInit(int *table, const char *pattern, int ptnLen) {
     }
 }
 
-int findNext(int *table, char target, int remain) {
-    return table[(int) target] > remain ? table[(int) target] : remain;
-}
-
-int bm(const char *text, const char *pattern, int table[], int i, int txtLen, int ptnLen) {
+int bm(const char *text, const char *pattern, const int table[], int i, int txtLen, int ptnLen) {
     int j = ptnLen - 1;
+    int lenMinus = ptnLen - 1;
 
-    i || (i = ptnLen - 1);
     while ((i < txtLen) && (j >= 0)) {
         if (text[i] != pattern[j] && text[i] != 'x') {
-            i += findNext(table, text[i], (ptnLen - j));
-            j = ptnLen - 1;
+            i += maxOf(table[(int) text[i]], ptnLen - j);
+            j = lenMinus;
         } else {
             j--;
             i--;
