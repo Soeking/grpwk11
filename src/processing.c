@@ -4,6 +4,7 @@
 #include "processing.h"
 #include "search.h"
 
+//挿入してたのを戻す
 __attribute__((nonnull))void revert(const char const *baseText, char *text, int *used, int id, int l) {
     for (int i = 0; i < l; ++i) {
         if (baseText[i + id] == 'x') text[i + id] = 'x';
@@ -11,6 +12,7 @@ __attribute__((nonnull))void revert(const char const *baseText, char *text, int 
     }
 }
 
+//sにtを挿入
 __attribute__((nonnull))void put(char *text, int *used, const char const *string, int id, int l, int strId) {
     for (int i = 0; i < l; ++i) {
         text[i + id] = string[i];
@@ -18,6 +20,7 @@ __attribute__((nonnull))void put(char *text, int *used, const char const *string
     }
 }
 
+//strsのどの文字列が挿入されてるかの探索
 __attribute__((nonnull))int searchId(const str const *ss, int id, int size) {
     for (int i = 0; i < size; ++i) {
         if (ss[i].id <= id && id < (ss[i].id + ss[i].len)) {
@@ -27,6 +30,7 @@ __attribute__((nonnull))int searchId(const str const *ss, int id, int size) {
     return -1;
 }
 
+//条件に当てはまる位置を探す
 __attribute__((nonnull))int loopBm(const char const *text, const char const *outText, str s, int l, int index) {
     while (1) {
         index = bm(text, s.s, s.table, index, l, s.len);
@@ -39,6 +43,7 @@ __attribute__((nonnull))int loopBm(const char const *text, const char const *out
     return index;
 }
 
+//最後用
 __attribute__((nonnull))int loopSoft(const char const *text, str s, int l, int index) {
     while (1) {
         index = bm(text, s.s, s.table, index, l, s.len);
@@ -51,6 +56,7 @@ __attribute__((nonnull))int loopSoft(const char const *text, str s, int l, int i
     return index;
 }
 
+//対象の文字列に対しての処理
 __attribute__((nonnull))void procStr(const char const *text, char *outText, int *used, int i, str *strs, int l, int size) {
     int index = loopBm(text, outText, strs[i], l, strs[i].len + strs[i].id);
     while (1) {
@@ -88,6 +94,7 @@ __attribute__((nonnull))void procStr(const char const *text, char *outText, int 
     }
 }
 
+//最後にやる対象の文字列に対しての処理
 __attribute__((nonnull))void lastProc(const char const *text, char *outText, int *used, int i, str *strs, int l, int size) {
     int first = loopSoft(text, strs[i], l, strs[i].len + strs[i].id);
     if (first < 0) first = loopSoft(text, strs[i], l, strs[i].len - 1);
@@ -112,6 +119,7 @@ __attribute__((nonnull))void lastProc(const char const *text, char *outText, int
     if (lb) procStr(text, outText, used, idl, strs, l, size);
 }
 
+//処理のメイン関数
 void proc(const char const *text, str *strs, int size, FILE *out) {
     int l = (int) strlen(text);
     char *outText;

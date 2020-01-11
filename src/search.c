@@ -1,5 +1,6 @@
 #define maxOf(a, b) a > b ? a : b
 
+//探索の準備のやつ
 __attribute__((nonnull))void tableInit(int *table, const char *pattern, int ptnLen) {
     int cnt = 0;
 
@@ -12,6 +13,7 @@ __attribute__((nonnull))void tableInit(int *table, const char *pattern, int ptnL
     }
 }
 
+//探索するとこ
 __attribute__((nonnull))int bm(const char *text, const char *pattern, const int table[], int i, int txtLen, int ptnLen) {
     int j = ptnLen - 1;
     int lenMinus = ptnLen - 1;
